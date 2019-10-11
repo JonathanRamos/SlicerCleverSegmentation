@@ -17,7 +17,7 @@ Next, click in the CleverSegmentation icon, then click again in "Initialize" to 
 You can preview the 3D segmentation by clicking on "Show 3D"
 ![Screenshot05](https://user-images.githubusercontent.com/3834596/66679174-f215f500-ec43-11e9-84f1-85f8b5c4d568.png)
 
-If The result is ok you can press in Apply to generate the final segmentation.
+If the result is ok you can press "Apply" to generate the final segmentation.
 Otherwise, the inside/outside annotation can be further improved accordingly.
 
 ## Publication
