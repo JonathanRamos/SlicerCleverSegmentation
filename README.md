@@ -24,7 +24,7 @@ Otherwise, the inside/outside annotation can be further improved accordingly.
 
 Will be available soon as:
 
-**Fast and smart segmentation of paraspinal muscles in magnetic resonance imaging with CleverSeg**. *Symposium on Graphics Patterns and Images* (SIBGRAPI2019)
+**Fast and smart segmentation of paraspinal muscles in magnetic resonance imaging with CleverSeg**. *Symposium on Graphics Patterns and Images* In: SIBGRAPI, Rio de Janeiro, Brazil, 2019, pages 1-8.
 
 ## More details
 
