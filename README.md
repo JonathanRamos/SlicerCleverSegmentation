@@ -20,6 +20,9 @@ You can preview the 3D segmentation by clicking on "Show 3D"
 If the result is ok you can press "Apply" to generate the final segmentation.
 Otherwise, the inside/outside annotation can be further improved accordingly.
 
+
+![mygif-min](https://user-images.githubusercontent.com/3834596/67093476-2891c980-f188-11e9-8a72-b18e1efc4f70.gif)
+
 ## Publication
 
 Will be available soon as:
