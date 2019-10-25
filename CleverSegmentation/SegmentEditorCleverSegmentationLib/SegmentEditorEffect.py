@@ -53,10 +53,12 @@ The effect uses fast clever-segmentation method</a>.
     self.updateGUIFromMRML()
 
   def computePreviewLabelmap(self, mergedImage, outputLabelmap):
-    import vtkSlicerModuleLogicPython as vtkCleverSeg
+    import vtkCleverSegModuleLogicPython as vtkCleverSeg
+    
+    
 
     if not self.cleverSegFilter:
-      self.cleverSegFilter = vtkCleverSeg.vtkImageCleverSegSegment()
+      self.cleverSegFilter = vtkCleverSeg.vtkCleverSeg()
       self.cleverSegFilter.SetIntensityVolume(self.clippedMasterImageData)
       self.cleverSegFilter.SetMaskVolume(self.clippedMaskImageData)
       maskExtent = self.clippedMaskImageData.GetExtent() if self.clippedMaskImageData else None

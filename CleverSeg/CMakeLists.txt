@@ -1,22 +1,22 @@
-project(vtkSlicer${MODULE_NAME}ModuleLogic)
+project(vtkCleverSegModuleLogic)
 
 set(KIT ${PROJECT_NAME})
 
-set(${KIT}_EXPORT_DIRECTIVE "VTK_SLICER_${MODULE_NAME_UPPER}_LOGIC_EXPORT")
+set(${KIT}_EXPORT_DIRECTIVE "VTK_CLEVERSEG_LOGIC_EXPORT")
 
 set(${KIT}_INCLUDE_DIRECTORIES
-  ${vtkSlicerSegmentationsModuleMRML_INCLUDE_DIRS}
-  ${vtkSlicerTerminologiesModuleLogic_INCLUDE_DIRS}
+  ${vtkSlicerSegmentationsModuleLogic_INCLUDE_DIRS}
   )
 
 set(${KIT}_SRCS
-  vtkImageCleverSegSegment.cxx
-  vtkImageCleverSegSegment.h
+  vtkCleverSeg.cxx
+  vtkCleverSeg.h
   )
 
 set(${KIT}_TARGET_LIBRARIES
   vtkSlicerSegmentationsModuleLogic
-)
+  )
+
 #-----------------------------------------------------------------------------
 SlicerMacroBuildModuleLogic(
   NAME ${KIT}
@@ -25,3 +25,5 @@ SlicerMacroBuildModuleLogic(
   SRCS ${${KIT}_SRCS}
   TARGET_LIBRARIES ${${KIT}_TARGET_LIBRARIES}
   )
+
+

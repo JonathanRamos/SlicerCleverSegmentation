@@ -1,4 +1,4 @@
-#include "vtkImageCleverSegSegment.h"
+#include "vtkCleverSeg.h"
 
 #include <iostream>
 #include <vector>
@@ -12,7 +12,7 @@
 #include <vtkStreamingDemandDrivenPipeline.h>
 #include <vtkTimerLog.h>
 
-vtkStandardNewMacro(vtkImageCleverSegSegment);
+vtkStandardNewMacro(vtkCleverSeg);
 
 //----------------------------------------------------------------------------
 typedef float DistancePixelType;  // type for cost function
@@ -25,7 +25,7 @@ const DistancePixelType DIST_INF = 1.0;//std::numeric_limits<DistancePixelType>:
 const DistancePixelType DIST_EPSILON = 0.0;//1e-3;
 
 //----------------------------------------------------------------------------
-class vtkImageCleverSegSegment::vtkInternal
+class vtkCleverSeg::vtkInternal
 {
 public:
 	vtkInternal();
@@ -69,7 +69,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-vtkImageCleverSegSegment::vtkInternal::vtkInternal()
+vtkCleverSeg::vtkInternal::vtkInternal()
 {
 	m_bSegInitialized = false;
 	m_DistanceVolume = vtkSmartPointer<vtkImageData>::New();
@@ -79,13 +79,13 @@ vtkImageCleverSegSegment::vtkInternal::vtkInternal()
 };
 
 //-----------------------------------------------------------------------------
-vtkImageCleverSegSegment::vtkInternal::~vtkInternal()
+vtkCleverSeg::vtkInternal::~vtkInternal()
 {
 	this->Reset();
 };
 
 //-----------------------------------------------------------------------------
-void vtkImageCleverSegSegment::vtkInternal::Reset()
+void vtkCleverSeg::vtkInternal::Reset()
 {
 	m_bSegInitialized = false;
 	m_DistanceVolume->Initialize();
@@ -96,7 +96,7 @@ void vtkImageCleverSegSegment::vtkInternal::Reset()
 
 //-----------------------------------------------------------------------------
 template<typename IntensityPixelType, typename LabelPixelType>
-bool vtkImageCleverSegSegment::vtkInternal::InitializationAHP(
+bool vtkCleverSeg::vtkInternal::InitializationAHP(
 	vtkImageData *intensityVolume,
 	vtkImageData *seedLabelVolume,
 	vtkImageData *maskLabelVolume)
@@ -251,7 +251,7 @@ bool vtkImageCleverSegSegment::vtkInternal::InitializationAHP(
 
 //-----------------------------------------------------------------------------
 template<typename IntensityPixelType, typename LabelPixelType>
-void vtkImageCleverSegSegment::vtkInternal::DijkstraBasedClassificationAHP(
+void vtkCleverSeg::vtkInternal::DijkstraBasedClassificationAHP(
 	vtkImageData *intensityVolume,
 	vtkImageData *vtkNotUsed(seedLabelVolume),
 	vtkImageData *vtkNotUsed(maskLabelVolume))
@@ -268,7 +268,7 @@ void vtkImageCleverSegSegment::vtkInternal::DijkstraBasedClassificationAHP(
 
 		float voxDiff, strength, weightDiff = 0;
 		const float theta = 0.01;
-		long idxCenter, idxNgbh, i, cont = 0;
+		long idxCenter, idxNgbh, cont = 0;
 		const long maxIt = 999;
 		bool converged = false;
 		std::vector<bool> visited = std::vector<bool>(dimXYZ, false);
@@ -356,7 +356,7 @@ void vtkImageCleverSegSegment::vtkInternal::DijkstraBasedClassificationAHP(
 
 //-----------------------------------------------------------------------------
 template< class IntensityPixelType, class LabelPixelType>
-bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg2(vtkImageData *intensityVolume, vtkImageData *seedLabelVolume, vtkImageData *maskLabelVolume)
+bool vtkCleverSeg::vtkInternal::ExecuteCleverSeg2(vtkImageData *intensityVolume, vtkImageData *seedLabelVolume, vtkImageData *maskLabelVolume)
 {
 	int* imSize = intensityVolume->GetDimensions();
 	m_DimX = imSize[0];
@@ -366,7 +366,7 @@ bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg2(vtkImageData *inte
 	if (m_DimX <= 2 || m_DimY <= 2 || m_DimZ <= 2)
 	{
 		// image is too small (there should be space for at least one voxel padding around the image)
-		vtkGenericWarningMacro("vtkImageCleverSegSegment: image size is too small");
+		vtkGenericWarningMacro("vtkCleverSeg: image size is too small");
 		return false;
 	}
 
@@ -381,7 +381,7 @@ bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg2(vtkImageData *inte
 
 //----------------------------------------------------------------------------
 template <class SourceVolType>
-bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg(vtkImageData *intensityVolume, vtkImageData *seedLabelVolume,
+bool vtkCleverSeg::vtkInternal::ExecuteCleverSeg(vtkImageData *intensityVolume, vtkImageData *seedLabelVolume,
 	vtkImageData *maskLabelVolume, vtkImageData *resultLabelVolume)
 {
 	int* extent = intensityVolume->GetExtent();
@@ -403,7 +403,7 @@ bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg(vtkImageData *inten
 		|| fabs(seedSpacing[1] - spacing[1]) > compareTolerance
 		|| fabs(seedSpacing[2] - spacing[2]) > compareTolerance)
 	{
-		vtkGenericWarningMacro("vtkImageCleverSegSegment: Seed label volume geometry does not match intensity volume geometry");
+		vtkGenericWarningMacro("vtkCleverSeg: Seed label volume geometry does not match intensity volume geometry");
 		return false;
 	}
 
@@ -423,12 +423,12 @@ bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg(vtkImageData *inten
 			|| fabs(maskSpacing[1] - spacing[1]) > compareTolerance
 			|| fabs(maskSpacing[2] - spacing[2]) > compareTolerance)
 		{
-			vtkGenericWarningMacro("vtkImageCleverSegSegment: Mask label volume geometry does not match intensity volume geometry");
+			vtkGenericWarningMacro("vtkCleverSeg: Mask label volume geometry does not match intensity volume geometry");
 			return false;
 		}
 		if (maskLabelVolume->GetScalarType() != MaskPixelTypeID || maskLabelVolume->GetNumberOfScalarComponents() != 1)
 		{
-			vtkGenericWarningMacro("vtkImageCleverSegSegment: Mask label volume scalar must be single-component unsigned char");
+			vtkGenericWarningMacro("vtkCleverSeg: Mask label volume scalar must be single-component unsigned char");
 			return false;
 		}
 	}
@@ -474,7 +474,7 @@ bool vtkImageCleverSegSegment::vtkInternal::ExecuteCleverSeg(vtkImageData *inten
 }
 
 //-----------------------------------------------------------------------------
-vtkImageCleverSegSegment::vtkImageCleverSegSegment()
+vtkCleverSeg::vtkCleverSeg()
 {
 	this->Internal = new vtkInternal();
 	this->SetNumberOfInputPorts(3);
@@ -482,13 +482,13 @@ vtkImageCleverSegSegment::vtkImageCleverSegSegment()
 }
 
 //-----------------------------------------------------------------------------
-vtkImageCleverSegSegment::~vtkImageCleverSegSegment()
+vtkCleverSeg::~vtkCleverSeg()
 {
 	delete this->Internal;
 }
 
 //-----------------------------------------------------------------------------
-void vtkImageCleverSegSegment::ExecuteDataWithInformation(
+void vtkCleverSeg::ExecuteDataWithInformation(
 	vtkDataObject *resultLabelVolumeDataObject, vtkInformation* vtkNotUsed(resultLabelVolumeInfo))
 {
 	vtkImageData *intensityVolume = vtkImageData::SafeDownCast(this->GetInput(0));
@@ -505,11 +505,11 @@ void vtkImageCleverSegSegment::ExecuteDataWithInformation(
 		break;
 	}
 	logger->StopTimer();
-	vtkDebugMacro(<< "vtkImageCleverSegSegment execution time: " << logger->GetElapsedTime());
+	vtkDebugMacro(<< "vtkCleverSeg execution time: " << logger->GetElapsedTime());
 }
 
 //-----------------------------------------------------------------------------
-int vtkImageCleverSegSegment::RequestInformation(
+int vtkCleverSeg::RequestInformation(
 	vtkInformation * request,
 	vtkInformationVector **inputVector,
 	vtkInformationVector *outputVector)
@@ -524,13 +524,13 @@ int vtkImageCleverSegSegment::RequestInformation(
 }
 
 //-----------------------------------------------------------------------------
-void vtkImageCleverSegSegment::Reset()
+void vtkCleverSeg::Reset()
 {
 	this->Internal->Reset();
 }
 
 //-----------------------------------------------------------------------------
-void vtkImageCleverSegSegment::PrintSelf(ostream &os, vtkIndent indent)
+void vtkCleverSeg::PrintSelf(ostream &os, vtkIndent indent)
 {
 	// XXX Implement this function
 	this->Superclass::PrintSelf(os, indent);
