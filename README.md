@@ -3,6 +3,12 @@
 Semi-automatic segmentation of anatomical structures. 
 Requires inside and outside annotation.
 
+## Publication
+
+If you Use this work, [please cite our paper](https://conferences.computer.org/sibgrapi/2019/pdfs/SIBGRAPI2019-44CNA7QI0AIw6YsYtKI4QT/4ysunQSGr9cCuarebBKLLS/4nFzNP3928DZuOKZCWmPzr.pdf).
+
+Jonathan S. Ramos, et al. **Fast and smart segmentation of paraspinal muscles in magnetic resonance imaging with CleverSeg**. *Symposium on Graphics Patterns and Images* In: SIBGRAPI, Rio de Janeiro, Brazil, 2019, pages 76-86.
+
 ## Usage Example
 
 First, open 3DSlicer, open a sample MRI example as in the tumor in the example.
@@ -23,12 +29,4 @@ Otherwise, the inside/outside annotation can be further improved accordingly.
 
 ![mygif-min](https://user-images.githubusercontent.com/3834596/67093476-2891c980-f188-11e9-8a72-b18e1efc4f70.gif)
 
-## Publication
 
-If you Use this work, [please cite our paper](https://conferences.computer.org/sibgrapi/2019/pdfs/SIBGRAPI2019-44CNA7QI0AIw6YsYtKI4QT/4ysunQSGr9cCuarebBKLLS/4nFzNP3928DZuOKZCWmPzr.pdf).
-
-Jonathan S. Ramos, et al. **Fast and smart segmentation of paraspinal muscles in magnetic resonance imaging with CleverSeg**. *Symposium on Graphics Patterns and Images* In: SIBGRAPI, Rio de Janeiro, Brazil, 2019, pages 76-86.
-
-## More details
-
-Available soon
