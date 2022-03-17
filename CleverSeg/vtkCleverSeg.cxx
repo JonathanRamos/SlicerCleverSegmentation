@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 #include <vtkInformation.h>
 #include <vtkInformationVector.h>
