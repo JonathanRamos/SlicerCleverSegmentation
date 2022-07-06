@@ -4,7 +4,7 @@ project(CleverSeg)
 
 #-----------------------------------------------------------------------------
 # Extension meta-information
-set(EXTENSION_HOMEPAGE "http://slicer.org/slicerWiki/index.php/Documentation/Nightly/Extensions/CleverSeg")
+set(EXTENSION_HOMEPAGE "https://github.com/lassoan/SlicerCleverSegmentation#cleversegmentation")
 set(EXTENSION_CATEGORY "Segmentation")
 set(EXTENSION_CONTRIBUTORS "Jonathan Ramos (University of São Paulo)")
 set(EXTENSION_DESCRIPTION "This is an example of a simple extension")
