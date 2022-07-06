@@ -77,3 +77,6 @@ The effect uses fast clever-segmentation method</a>.
     self.cleverSegFilter.Update()
 
     outputLabelmap.DeepCopy( self.cleverSegFilter.GetOutput() )
+    imageToWorld = vtk.vtkMatrix4x4()
+    mergedImage.GetImageToWorldMatrix(imageToWorld)
+    outputLabelmap.SetImageToWorldMatrix(imageToWorld)
